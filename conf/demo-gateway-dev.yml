@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: route-provider-a
+        uri: lb://provider-a
+        predicates:
+        - Path=/api/a/**
+        filters:
+        - StripPrefix=2
+      - id: route-provider-b
+        uri: lb://provider-b
+        predicates:
+        - Path=/api/b/**
+        filters:
+        - StripPrefix=2 #过滤/api/b

@@ -1,0 +1,83 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    remote-ip-header: x-forwarded-for
+  use-forward-headers: true
+
+management:
+  security:
+    enabled: false
+
+spring:
+  aop:
+    proxy-target-class: true
+    auto: true
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat,wall
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/mant?characterEncoding=utf8&useSSL=false
+    username: **
+    password: **
+    druid:
+      initial-size: 50
+      min-idle: 50
+      max-active: 100
+      test-on-borrow: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      web-stat-filter:
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+      stat-view-servlet:
+        allow:
+        login-username: admin
+        login-password: admin
+      connection-init-sqls: SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci
+  boot:
+    admin:
+      username: admin
+      password: admin
+
+  sleuth:
+    sampler:
+      percentage: 0.2
+  jackson:
+    default-property-inclusion: non_null
+    joda-date-time-format: yyyy-MM-dd HH:mm:ss
+    date-format: yyyy-MM-dd HH:mm:ss
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+    dispatch-options-request: true
+
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+
+ribbon:
+  eager-load:
+    enabled: true
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 2
+  OkToRetryOnAllOperations: false
+  ConnectTimeout: 60000
+  ReadTimeout: 20000
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000
+
+mybatis:
+  type-aliases-package: com.mant.demo.provider.a.model.dto
+  mapper-locations: classpath*:com/mant/demo/provider/a/data/mapper/*.xml
