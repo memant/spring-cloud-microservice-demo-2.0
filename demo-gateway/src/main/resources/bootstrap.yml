@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yml
+#        prefix: ${spring.application.name}
+    gateway:
+      routes:
+      - id: route_provider_a
+        uri: lb://provider_a
+        predicates:
+        - Path=/api/a/**
+        filters:
+        - StripPrefix=1
+#      - id: route_provider_b
+#        uri: lb://provider_b
+#        predicates:
+#        - Path=/api/b/**
+#        filters:
+#        - StripPrefix=1
